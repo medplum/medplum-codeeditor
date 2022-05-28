@@ -8,7 +8,7 @@
   <body>
     <iframe
       id="typescript-iframe"
-      src="./typescript-editor.html?code=import%20%7B%20BotEvent%2C%20MedplumClient%20%7D%20from%20%27%40medplum%2Fcore%27%3B%0Aimport%20%7B%20Patient%20%7D%20from%20%27%40medplum%2Ffhirtypes%27%3B%0A%0Aexport%20async%20function%20handler%28client%3A%20MedplumClient%2C%20event%3A%20BotEvent%29%3A%20Promise%3Cany%3E%20%7B%0A%20%20console.log%28%27client%3A%20%27%20%2B%20%21%21client%29%3B%0A%20%20console.log%28%27event%3A%20%27%20%2B%20%21%21event%29%3B%0A%0A%20%20const%20patient%20%3D%20event.input%20as%20Patient%3B%0A%20%20console.log%28JSON.stringify%28event%2C%20null%2C%202%29%29%3B%0A%20%20return%20patient.birthDate%3B%0A%7D%0A"
+      src="./typescript-editor.html"
       style="
         position: absolute;
         left: 20px;
@@ -21,7 +21,7 @@
     ></iframe>
     <iframe
       id="json-iframe"
-      src="./json-editor.html?code=%7B%0A%20%20%22resourceType%22%3A%20%22Patient%22%2C%0A%20%20%22birthDate%22%3A%20%221990-01-01%22%0A%7D"
+      src="./json-editor.html"
       style="
         position: absolute;
         left: 850px;

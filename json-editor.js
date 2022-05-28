@@ -4,7 +4,7 @@ let editor = undefined;
 
 require.config({
   paths: {
-    vs: "https://typescript.azureedge.net/cdn/4.6.4/monaco/min/vs",
+    vs: "https://typescript.azureedge.net/cdn/4.7.2/monaco/min/vs",
   },
   ignoreDuplicateModules: ["vs/editor/editor.main"],
 });
@@ -23,7 +23,11 @@ require(["vs/editor/editor.main"], () => {
 });
 
 window.addEventListener("message", (e) => {
-  if (editor && e.data?.command === "getValue") {
+  if (e.data?.command === "setValue" && editor) {
+    editor.getModel().setValue(e.data.value);
+  }
+
+  if (e.data?.command === "getValue" && editor) {
     e.ports[0].postMessage({ result: editor.getValue() });
   }
 });

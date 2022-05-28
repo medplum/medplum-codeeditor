@@ -12,7 +12,7 @@ let tsProxy = undefined;
 // https://typescript.azureedge.net/indexes/releases.json
 require.config({
   paths: {
-    vs: "https://typescript.azureedge.net/cdn/4.6.4/monaco/min/vs",
+    vs: "https://typescript.azureedge.net/cdn/4.7.2/monaco/min/vs",
     sandbox: "https://www.typescriptlang.org/js/sandbox",
   },
   ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -45,15 +45,17 @@ require([
 });
 
 window.addEventListener("message", (e) => {
-  if (editor && tsProxy && e.data?.command) {
-    if (e.data.command === "getValue") {
-      e.ports[0].postMessage({ result: editor.getValue() });
-    }
+  if (e.data?.command === "setValue" && editor) {
+    editor.getModel().setValue(e.data.value);
+  }
 
-    if (e.data.command === "getOutput") {
-      tsProxy.getEmitOutput(editor.getModel().uri.toString()).then((r) => {
-        e.ports[0].postMessage({ result: r.outputFiles[0].text });
-      });
-    }
+  if (e.data?.command === "getValue" && editor) {
+    e.ports[0].postMessage({ result: editor.getValue() });
+  }
+
+  if (e.data?.command === "getOutput" && editor && tsProxy) {
+    tsProxy.getEmitOutput(editor.getModel().uri.toString()).then((r) => {
+      e.ports[0].postMessage({ result: r.outputFiles[0].text });
+    });
   }
 });
