@@ -3,8 +3,19 @@
 
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code") || "";
+
+let module = params.get("module") || "esnext";
+if (module === 'commonjs') {
+  module = 'umd';
+}
+
+const target = module === "esnext" ? "esnext" : "es6";
+
 let editor = undefined;
 let tsProxy = undefined;
+
+console.log("module", module);
+console.log("target", target);
 
 // This version uses the latest version of the sandbox, which is used on the TypeScript website.
 // For the monaco version you can use unpkg or the TypeSCript web infra CDN.
@@ -25,7 +36,11 @@ require([
 ], (main, _tsWorker, sandboxFactory) => {
   const sandboxConfig = {
     text: code,
-    compilerOptions: {},
+    compilerOptions: {
+      allowJs: true,
+      module,
+      target,
+    },
     domID: "container",
   };
 
