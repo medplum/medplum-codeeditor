@@ -5,8 +5,8 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code") || "";
 
 let module = params.get("module") || "esnext";
-if (module === 'commonjs') {
-  module = 'umd';
+if (module === "commonjs") {
+  module = "umd";
 }
 
 const target = module === "esnext" ? "esnext" : "es6";
@@ -50,6 +50,7 @@ require([
     window.ts
   );
   editor = sandbox.editor;
+  editor.getModel().updateOptions({ tabSize: 2 });
   editor.focus();
 
   // Get transpiled output

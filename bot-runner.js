@@ -22,6 +22,19 @@ window.addEventListener("message", async (e) => {
   }
 });
 
+function require(path) {
+  if (path === "@medplum/core") {
+    return medplum.core;
+  }
+  if (path === "node-fetch") {
+    return fetch;
+  }
+  if (path === "pdfmake") {
+    return pdfMake;
+  }
+  throw new Error("Import not found: " + path);
+}
+
 async function executeHandler(e, baseUrl, accessToken, input, handler) {
   try {
     const client = new medplum.core.MedplumClient({ baseUrl });
