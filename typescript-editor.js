@@ -23,7 +23,7 @@ console.log("target", target);
 // https://typescript.azureedge.net/indexes/releases.json
 require.config({
   paths: {
-    vs: "https://typescript.azureedge.net/cdn/4.7.2/monaco/min/vs",
+    vs: "https://typescript.azureedge.net/cdn/4.7.4/monaco/min/vs",
     sandbox: "https://www.typescriptlang.org/js/sandbox",
   },
   ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -36,8 +36,8 @@ require([
 ], (main, _tsWorker, sandboxFactory) => {
   const sandboxConfig = {
     text: code,
+    filetype: "ts",
     compilerOptions: {
-      allowJs: true,
       module,
       target,
     },
