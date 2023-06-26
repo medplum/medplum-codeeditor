@@ -4,7 +4,7 @@ let editor = undefined;
 
 require.config({
   paths: {
-    vs: "https://typescript.azureedge.net/cdn/4.7.2/monaco/min/vs",
+    vs: "https://typescript.azureedge.net/cdn/5.1.3/monaco/min/vs",
   },
   ignoreDuplicateModules: ["vs/editor/editor.main"],
 });
