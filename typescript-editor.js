@@ -63,6 +63,7 @@ require([
 window.addEventListener("message", (e) => {
   if (e.data?.command === "setValue" && editor) {
     editor.getModel().setValue(e.data.value);
+    e.ports[0].postMessage({ result: true });
   }
 
   if (e.data?.command === "getValue" && editor) {

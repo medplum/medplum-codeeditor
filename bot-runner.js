@@ -1,6 +1,7 @@
 window.addEventListener("message", async (e) => {
   if (e.data?.command === "setValue") {
     setOutput(e.data.value);
+    e.ports[0].postMessage({ result: true });
   }
 
   if (e.data?.command === "execute") {
