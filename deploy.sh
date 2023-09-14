@@ -29,3 +29,11 @@ aws s3 cp "$LOCAL_PATH" "$S3_URI" \
   --cache-control "no-cache" \
   --exclude "*" \
   --include "*.js"
+
+# Favicon
+aws s3 cp "$LOCAL_PATH" "$S3_URI" \
+  --recursive \
+  --content-type "image/x-icon" \
+  --cache-control "public, max-age=31536000" \
+  --exclude "*" \
+  --include "*.ico"
