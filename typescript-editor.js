@@ -3,13 +3,7 @@
 
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code") || "";
-
-let module = params.get("module") || "esnext";
-if (module === "commonjs") {
-  module = "umd";
-}
-
-const target = module === "esnext" ? "esnext" : "es6";
+const module = params.get("module") || "commonjs";
 
 const state = {
   editor: undefined,
@@ -18,15 +12,14 @@ const state = {
 };
 
 console.log("module", module);
-console.log("target", target);
 
 // This version uses the latest version of the sandbox, which is used on the TypeScript website.
-// For the monaco version you can use unpkg or the TypeSCript web infra CDN.
+// For the monaco version you can use unpkg or the TypeScript web infra CDN.
 // You can see the available releases for TypeScript here:
-// https://typescript.azureedge.net/indexes/releases.json
+// https://playgroundcdn.typescriptlang.org/indexes/releases.json
 require.config({
   paths: {
-    vs: "https://typescript.azureedge.net/cdn/5.1.3/monaco/min/vs",
+    vs: "https://playgroundcdn.typescriptlang.org/cdn/5.9.3/monaco/min/vs",
     sandbox: "https://www.typescriptlang.org/js/sandbox",
   },
   ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -37,12 +30,15 @@ require([
   "vs/language/typescript/tsWorker",
   "sandbox/index",
 ], (main, _tsWorker, sandboxFactory) => {
+  const { ModuleKind, ScriptTarget } = main.languages.typescript;
   const sandboxConfig = {
     text: code,
     filetype: "ts",
     compilerOptions: {
-      module,
-      target,
+      module: module === "commonjs" ? ModuleKind.CommonJS : ModuleKind.ESNext,
+      target: ScriptTarget.ES2020,
+      skipLibCheck: true,
+      skipDefaultLibCheck: true,
     },
     domID: "container",
   };
@@ -91,7 +87,17 @@ window.addEventListener("message", (e) => {
       state.tsProxy
         .getEmitOutput(state.editor.getModel().uri.toString())
         .then((r) => {
-          e.ports[0].postMessage({ result: r.outputFiles[0].text });
+          if (r.outputFiles && r.outputFiles.length > 0) {
+            e.ports[0].postMessage({ result: r.outputFiles[0].text });
+          } else {
+            e.ports[0].postMessage({ result: "" });
+          }
+        })
+        .catch((err) => {
+          console.error("Error getting emit output:", err);
+          e.ports[0].postMessage({
+            error: err.message || "Failed to get transpiled output",
+          });
         });
     } else {
       e.ports[0].postMessage({ result: "" });

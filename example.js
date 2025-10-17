@@ -40,6 +40,10 @@ document.getElementById("go-button").addEventListener("click", async () => {
   console.log(result);
 });
 
+document.getElementById("module-select").addEventListener("change", (e) => {
+  codeFrame.src = `./typescript-editor.html?module=${e.target.value}`;
+});
+
 function sendCommand(frame, command) {
   return new Promise((resolve, reject) => {
     const channel = new MessageChannel();
