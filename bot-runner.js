@@ -69,5 +69,5 @@ function setOutput(output) {
   if (typeof output !== "string") {
     output = JSON.stringify(output, null, 2);
   }
-  document.getElementById("container").innerHTML = output;
+  document.getElementById("container").textContent = output;
 }
